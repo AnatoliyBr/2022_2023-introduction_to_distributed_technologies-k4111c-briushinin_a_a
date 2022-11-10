@@ -181,6 +181,7 @@ CMD ["python", "app.py"]
 
 `docker COMMAND --help` - параметр *--help* позволяет вывести документацию на команду  
 
+--- 
 ## Kubernetes (K8S) 
 ### Суть технологии
 **Kubernetes** - платформа, которая автоматизирует распределение и выполнение контейнеров приложений для запуска в **кластере** более эффективным образом.
@@ -204,12 +205,13 @@ Kubernetes-кластер может быть развернут на **физи
 1. Kubernetes позволяет приложениям абстрагироваться от инфраструктуры, давая нам простое API, к которому можно отправлять запросы.
 2. Kubernetes способствует стандартизации работы с провайдерами облачных услуг (Cloud Service Provider, CSP).
 
+--- 
 ## Minikube
 ### Суть технологии
 **Minikube** - это упрощённая реализация Kubernetes, которая создает виртуальную машину на вашем локальном компьютере и разворачивает простой кластер с одним узлом. Minikube доступен для Linux, macOS и Windows.
 
 ---
-## Замечания
+## Ход работы и мои замечения
 
 > Установить Docker на рабочий компьютер
 
@@ -223,13 +225,22 @@ Kubernetes-кластер может быть развернут на **физи
 
 При работе с Minikube столкнулся с ошибкой #2.
 
+### Создание контейнера vault
 Скачиваем образ vault командой `docker pull vault`.  
-Проверяем, что появился образ vault - `docker images`.  
-Создаем контейнер на основе образа vault - `docker run -d --name vault vault`.  
-Проверяем, что появилсмя контейнер vault - `docker ps -a`.  
+Проверяем, что появился образ vault - `docker images`.
 
+![alt-текст](https://github.com/AnatoliyBr/2022_2023-introduction_to_distributed_technologies-k4111c-briushinin_a_a/blob/master/lab1/images/vault_image.png 'Образ vault')
+
+Создаем контейнер на основе образа vault - `docker run -d --name vault vault`.  
+Проверяем, что появился контейнер vault - `docker ps -a`.  
+
+![alt-текст](https://github.com/AnatoliyBr/2022_2023-introduction_to_distributed_technologies-k4111c-briushinin_a_a/blob/master/lab1/images/vault_container.png 'Контейнер vault')
+
+### Создание Pod
 Запускаем minikube - `minikube start`.  
 Проверяем, что появился узел - `kubectl get nodes`.  
+
+![alt-текст](https://github.com/AnatoliyBr/2022_2023-introduction_to_distributed_technologies-k4111c-briushinin_a_a/blob/master/lab1/images/node.png 'Узел')
 
 Создадим **manifest file**, в котором будет описан наш под.  
 
@@ -255,17 +266,31 @@ spec:
 ```
 Переходим в папку с .yaml файлом и выполняем команду `kubectl create -f vault_pod.yaml`.
 
+> На данном этапе я столкнулся с ошибкой #3, так как не добавил метку в манифест пода.
+
 Проверяем, что появился Pod - `kubectl get pods`.
 
+![alt-текст](https://github.com/AnatoliyBr/2022_2023-introduction_to_distributed_technologies-k4111c-briushinin_a_a/blob/master/lab1/images/vault_pod.png 'Pod vault')
+
+### Создание сервиса
 Создаем сервис для доступа к Pod - `minikube kubectl -- expose pod vault --type=NodePort --port=8200`.
+
+![alt-текст](https://github.com/AnatoliyBr/2022_2023-introduction_to_distributed_technologies-k4111c-briushinin_a_a/blob/master/lab1/images/vault_service.png 'Service vault')
 
 Перенаправляем трафик с Pod на локальный - `minikube kubectl -- port-forward service/vault 8200:8200`.
 
+![alt-текст](https://github.com/AnatoliyBr/2022_2023-introduction_to_distributed_technologies-k4111c-briushinin_a_a/blob/master/lab1/images/port_forward.png 'Port-forward')
+
 Открываем страницу авторизации Vault `http://localhost:8200`.
 
-Чтобы найти токен для авторизации, используем команду `docker logs vault` или `minikube kubectl -- logs service/vault`.
+![alt-текст](https://github.com/AnatoliyBr/2022_2023-introduction_to_distributed_technologies-k4111c-briushinin_a_a/blob/master/lab1/images/localhost.png 'Vault page')
 
-> Root Token: hvs.5Jl5AHpkirksVGCvte5yXEhg
+### Поиск токена
+Чтобы найти токен для авторизации, открываем второй терминал и используем команду ~~`docker logs vault`~~ или `minikube kubectl -- logs service/vault`.
+
+> Root Token: hvs.LlAzp5F68hfi8M90qGBa7wPa
+
+![alt-текст](https://github.com/AnatoliyBr/2022_2023-introduction_to_distributed_technologies-k4111c-briushinin_a_a/blob/master/lab1/images/auth_success.png 'Successful authorization')
 
 Работа выполнена - останавливаем узел командой `minikube stop`.
 
@@ -289,15 +314,19 @@ the docker client must be run elevated to connect. This error may also indicate 
 3. Не добавил labels в manifest
 > error: couldn't retrieve selectors via --selector flag or introspection: the pod has no labels and cannot be exposed
 
+* Решение
 Удаляем Pod `kubectl delete pod vault`.
 
-Дописываем любые метки, например environment.
+Дописываем любые метки, например environment и tier.
 
 ```
 labels:
   environment: dev
   tier: vault
 ```
+
+Заново создаем Pod `kubectl create -f vault_pod.yaml`.
+
 ---
 ## Полезные ссылки
 ### Docker
