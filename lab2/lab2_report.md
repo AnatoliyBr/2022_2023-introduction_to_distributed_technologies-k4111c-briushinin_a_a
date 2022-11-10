@@ -9,3 +9,13 @@
         Date of create: 21.10.2022
         Date of finished: -
         
+apiVersion: v1  
+kind: Pod  
+metadata:  
+name: itdt-contained-frontend
+labels:
+run: itdt-contained-frontend
+spec:
+containers:
+-name: itdt-contained-frontend
+image: docker.io/ifilyaninitmo/itdt-contained-frontend:master
