@@ -240,8 +240,6 @@ Kubernetes-кластер может быть развернут на **физи
 Запускаем minikube - `minikube start`.  
 Проверяем, что появился узел - `kubectl get nodes`.  
 
-![alt-текст](https://github.com/AnatoliyBr/2022_2023-introduction_to_distributed_technologies-k4111c-briushinin_a_a/blob/master/lab1/images/node.png 'Узел')
-
 Создадим **manifest file**, в котором будет описан наш под.  
 
 Для создания корректного описания манифеста в YAML-формате достаточно знать только два типа структур:
@@ -293,6 +291,11 @@ spec:
 ![alt-текст](https://github.com/AnatoliyBr/2022_2023-introduction_to_distributed_technologies-k4111c-briushinin_a_a/blob/master/lab1/images/auth_success.png 'Successful authorization')
 
 Работа выполнена - останавливаем узел командой `minikube stop`.
+
+### Диаграмма
+Схема организации контейнера и сервиса, нарисованная в [draw.io](https://app.diagrams.net/).
+
+![](https://github.com/AnatoliyBr/2022_2023-introduction_to_distributed_technologies-k4111c-briushinin_a_a/blob/master/lab1/images/lab1_diagram.png 'Диаграмма')
 
 ---
 ## Ошибки (в хронологическом порядке)
