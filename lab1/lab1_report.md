@@ -211,7 +211,7 @@ Kubernetes-кластер может быть развернут на **физи
 **Minikube** - это упрощённая реализация Kubernetes, которая создает виртуальную машину на вашем локальном компьютере и разворачивает простой кластер с одним узлом. Minikube доступен для Linux, macOS и Windows.
 
 ---
-## Ход работы и мои замечения
+## Ход работы и мои замечания
 
 > Установить Docker на рабочий компьютер
 
@@ -317,7 +317,7 @@ the docker client must be run elevated to connect. This error may also indicate 
 3. Не добавил labels в manifest
 > error: couldn't retrieve selectors via --selector flag or introspection: the pod has no labels and cannot be exposed
 
-* Решение
+* Решение  
 Удаляем Pod `kubectl delete pod vault`.
 
 Дописываем любые метки, например environment и tier.

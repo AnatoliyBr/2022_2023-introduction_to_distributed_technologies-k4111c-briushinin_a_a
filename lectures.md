@@ -89,3 +89,34 @@ Docker-контейнер по сути и есть микросервис.
 1. «Минск-1» — первая оригинальная белорусская ЭВМ.
 2. Первый «русский хакер» создал "программную бомбу" для остановки конвейера на АвтоВАЗе, чтобы заработать премиальные за ремонт.
 3. Cyberpunk 2077 разрабатывали методологией Waterfall, поэтому было долго, тяжело и по итогу в игре оказалось много багов.
+
+## 2. Архитектура Docker и Kubernetes, docker registry и все что с этим связано. Истории создания и основные идеи.
+
+### Архитектура Docker
+
+В документации есть [схема](https://docs.docker.com/engine/images/architecture.svg).
+
+![Docker architecture](https://github.com/AnatoliyBr/2022_2023-introduction_to_distributed_technologies-k4111c-briushinin_a_a/blob/master/images/docker_architecture.png 'Архитектура Docker')
+
+По сути есть три части:
+* Client (мы)
+* Docker Host (наша машина)
+* Registry (хранилище образов)
+
+В отчете lab1_report.md есть шпаргалка по Docker.
+
+**Проброс порта**
+Когда мы сопоставляем порты компьютера и порты docker (например, port-forward 8200:8200), мы связываем изолированное окружение контейнера с нашем компьютером - образуем сеть.
+
+### Архитектура Kubernetes
+
+![Docker architecture](https://github.com/AnatoliyBr/2022_2023-introduction_to_distributed_technologies-k4111c-briushinin_a_a/blob/master/images/docker_architecture.png 'Архитектура Docker')
+
+Элементы:
+* Master node - управляет кластером
+   * API Server настраивает Container Runtime и kube-proxy
+   * etcd (key-value store) - база данных, типа ключ-значение, как MongoDB,  там хранятся все переменные, по сути туда записывается состояние системы
+* Worker Node - железка, в ней 3 монстра, не считая элементов (k8s objects)
+   * kubelet - агент, связывает Container Runtime и API Server
+   * Container Runtime - по сути Docker, в первой лабе - **Pod**
+   * kube-proxy - то с чем работает user - тот самый **сервис**, который создавали для Pod в первой лабе
