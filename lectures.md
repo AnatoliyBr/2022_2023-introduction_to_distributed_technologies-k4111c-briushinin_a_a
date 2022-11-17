@@ -105,12 +105,12 @@ Docker-контейнер по сути и есть микросервис.
 
 В отчете lab1_report.md есть шпаргалка по Docker.
 
-**Проброс порта**
+**Проброс порта**  
 Когда мы сопоставляем порты компьютера и порты docker (например, port-forward 8200:8200), мы связываем изолированное окружение контейнера с нашем компьютером - образуем сеть.
 
 ### Архитектура Kubernetes
 
-![Docker architecture](https://github.com/AnatoliyBr/2022_2023-introduction_to_distributed_technologies-k4111c-briushinin_a_a/blob/master/images/docker_architecture.png 'Архитектура Docker')
+![K8S architecture](https://github.com/AnatoliyBr/2022_2023-introduction_to_distributed_technologies-k4111c-briushinin_a_a/blob/master/images/k8s_architecture.png 'Архитектура K8S')
 
 Элементы:
 * Master node - управляет кластером

@@ -195,11 +195,18 @@ CMD ["python", "app.py"]
 
 **Узел** - это виртуальная машина или физический компьютер, который выполняет роль рабочего узла в кластере Kubernetes.
 
-У каждого узла есть **Kubelet** - агент, управляющий узлом и взаимодействующий с ведущим узлом Kubernetes. Узел также имеет инструменты для выполнения контейнерных операций, например, **Docker** или rkt. Узлы взаимодействуют с ведущим узлом посредством **API Kubernetes**, который предлагает ведущий узел. 
+У каждого узла есть **Kubelet** - агент, управляющий узлом и взаимодействующий с ведущим узлом Kubernetes. Узел также имеет инструменты для выполнения контейнерных операций, например, **Docker** или rkt. Узлы взаимодействуют с ведущим узлом посредством **API Kubernetes**, который предлагает ведущий узел.
+
+> Запрос -> API Server -> Kubelet -> Pod
+
+### Pod
+Pod - минимальная развертываемая единица в K8S, набор из одного и более контейнеров, имеющих общее пространство имен и тома общей файловой системы.
+
+> Надо отметить, что контейнеры имеют собственные изолированные файловые системы, но они могут совместно использовать данные, пользуясь ресурсом K8S, который называется **Volume (том)**.
+
+У каждого пода есть уникальный IP-адрес. Для описания пода пишут манифест (manifest file).
 
 Kubernetes-кластер может быть развернут на **физических** или **виртуальных** машинах. Чтобы начать работать с Kubernetes, можно использовать **Minikube**. 
-
-> Запрос -> API Server -> Kubelet -> Pode
 
 Итого:
 1. Kubernetes позволяет приложениям абстрагироваться от инфраструктуры, давая нам простое API, к которому можно отправлять запросы.
@@ -229,12 +236,12 @@ Kubernetes-кластер может быть развернут на **физи
 Скачиваем образ vault командой `docker pull vault`.  
 Проверяем, что появился образ vault - `docker images`.
 
-![alt-текст](https://github.com/AnatoliyBr/2022_2023-introduction_to_distributed_technologies-k4111c-briushinin_a_a/blob/master/lab1/images/vault_image.png 'Образ vault')
+![Образ vault](https://github.com/AnatoliyBr/2022_2023-introduction_to_distributed_technologies-k4111c-briushinin_a_a/blob/master/lab1/images/vault_image.png 'Образ vault')
 
 Создаем контейнер на основе образа vault - `docker run -d --name vault vault`.  
 Проверяем, что появился контейнер vault - `docker ps -a`.  
 
-![alt-текст](https://github.com/AnatoliyBr/2022_2023-introduction_to_distributed_technologies-k4111c-briushinin_a_a/blob/master/lab1/images/vault_container.png 'Контейнер vault')
+![Контейнер vault](https://github.com/AnatoliyBr/2022_2023-introduction_to_distributed_technologies-k4111c-briushinin_a_a/blob/master/lab1/images/vault_container.png 'Контейнер vault')
 
 ### Создание Pod
 Запускаем minikube - `minikube start`.  
@@ -268,34 +275,34 @@ spec:
 
 Проверяем, что появился Pod - `kubectl get pods`.
 
-![alt-текст](https://github.com/AnatoliyBr/2022_2023-introduction_to_distributed_technologies-k4111c-briushinin_a_a/blob/master/lab1/images/vault_pod.png 'Pod vault')
+![Pod vault](https://github.com/AnatoliyBr/2022_2023-introduction_to_distributed_technologies-k4111c-briushinin_a_a/blob/master/lab1/images/vault_pod.png 'Pod vault')
 
 ### Создание сервиса
 Создаем сервис для доступа к Pod - `minikube kubectl -- expose pod vault --type=NodePort --port=8200`.
 
-![alt-текст](https://github.com/AnatoliyBr/2022_2023-introduction_to_distributed_technologies-k4111c-briushinin_a_a/blob/master/lab1/images/vault_service.png 'Service vault')
+![Service vault](https://github.com/AnatoliyBr/2022_2023-introduction_to_distributed_technologies-k4111c-briushinin_a_a/blob/master/lab1/images/vault_service.png 'Service vault')
 
 Перенаправляем трафик с Pod на локальный - `minikube kubectl -- port-forward service/vault 8200:8200`.
 
-![alt-текст](https://github.com/AnatoliyBr/2022_2023-introduction_to_distributed_technologies-k4111c-briushinin_a_a/blob/master/lab1/images/port_forward.png 'Port-forward')
+![Port-forward](https://github.com/AnatoliyBr/2022_2023-introduction_to_distributed_technologies-k4111c-briushinin_a_a/blob/master/lab1/images/port_forward.png 'Port-forward')
 
 Открываем страницу авторизации Vault `http://localhost:8200`.
 
-![alt-текст](https://github.com/AnatoliyBr/2022_2023-introduction_to_distributed_technologies-k4111c-briushinin_a_a/blob/master/lab1/images/localhost.png 'Vault page')
+![Vault page](https://github.com/AnatoliyBr/2022_2023-introduction_to_distributed_technologies-k4111c-briushinin_a_a/blob/master/lab1/images/localhost.png 'Vault page')
 
 ### Поиск токена
 Чтобы найти токен для авторизации, открываем второй терминал и используем команду ~~`docker logs vault`~~ или `minikube kubectl -- logs service/vault`.
 
 > Root Token: hvs.LlAzp5F68hfi8M90qGBa7wPa
 
-![alt-текст](https://github.com/AnatoliyBr/2022_2023-introduction_to_distributed_technologies-k4111c-briushinin_a_a/blob/master/lab1/images/auth_success.png 'Successful authorization')
+![Successful authorization](https://github.com/AnatoliyBr/2022_2023-introduction_to_distributed_technologies-k4111c-briushinin_a_a/blob/master/lab1/images/auth_success.png 'Successful authorization')
 
 Работа выполнена - останавливаем узел командой `minikube stop`.
 
 ### Диаграмма
 Схема организации контейнера и сервиса, нарисованная в [draw.io](https://app.diagrams.net/).
 
-![](https://github.com/AnatoliyBr/2022_2023-introduction_to_distributed_technologies-k4111c-briushinin_a_a/blob/master/lab1/images/lab1_diagram.png 'Диаграмма')
+![Диаграмма](https://github.com/AnatoliyBr/2022_2023-introduction_to_distributed_technologies-k4111c-briushinin_a_a/blob/master/lab1/images/lab1_diagram.png 'Диаграмма')
 
 ---
 ## Ошибки (в хронологическом порядке)
@@ -320,7 +327,7 @@ the docker client must be run elevated to connect. This error may also indicate 
 * Решение  
 Удаляем Pod `kubectl delete pod vault`.
 
-Дописываем любые метки, например environment и tier.
+Дописываем любые метки, например environment и tier. Метки позволяют понять сервису, с какими именно подами ему нужно работать.
 
 ```
 labels:
