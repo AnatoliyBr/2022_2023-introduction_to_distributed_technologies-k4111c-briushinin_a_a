@@ -7,7 +7,7 @@
         Author: Briushinin Anatolii Alekseevich
         Lab: Lab2
         Date of create: 21.10.2022
-        Date of finished: -
+        Date of finished: 17.11.2022
 
 # Лабораторная работа №2 "Развертывание веб сервиса в Minikube, доступ к веб интерфейсу сервиса. Мониторинг сервиса."
 
@@ -37,7 +37,8 @@ Deployment - ресурс K8S, который позволяет автомат�
 
 ![Образ itdt-contained-frontend](https://github.com/AnatoliyBr/2022_2023-introduction_to_distributed_technologies-k4111c-briushinin_a_a/blob/master/lab2/images/itdt-contained-frontend_image.png 'Образ itdt-contained-frontend')
 
-Создаем контейнер на основе образа itdt-contained-frontend - `docker run -d --name frontend-container ifilyaninitmo/itdt-contained-frontend:master`.  
+Создаем контейнер на основе образа itdt-contained-frontend - `docker run -d --name frontend-container ifilyaninitmo/itdt-contained-frontend:master`.
+
 Проверяем, что появился контейнер frontend_container - `docker ps -a`.  
 
 ![Контейнер frontend-container](https://github.com/AnatoliyBr/2022_2023-introduction_to_distributed_technologies-k4111c-briushinin_a_a/blob/master/lab2/images/frontend-container.png 'Контейнер frontend-container')
@@ -77,13 +78,15 @@ spec:
           value: ITMO
 ```
 
-~~Чтобы посмотреть переменные окружения используем команду `kubectl explain env`~~
+~~Чтобы посмотреть переменные окружения используем команду `kubectl explain env`.~~
 
 Чтобы запустить 2 экземпляра пода, используем свойства `replicas: 2`.
 
 Шаблон пода задается в объекте `Template`. С помощью свойства `env` объявляем внутри подов переменные окружения `REACT_APP_USERNAME` и `REACT_APP_COMPANY_NAME` со значениями `Anatolii` и `ITMO`, соответственно.
 
-Переходим в папку с .yaml файлом и выполняем команду `kubectl create -f frontend-deployment.yaml`. Столкнулся с ошибкой #1.
+Переходим в папку с .yaml файлом и выполняем команду `kubectl create -f frontend-deployment.yaml`.
+
+> На этом моменте я столкнулся с ошибкой #1, потому что в названии конейнера был символ нижнего подчеркивания.
 
 Проверяем, что появилось развертывание - `kubectl get deployments`.
 
@@ -107,17 +110,27 @@ spec:
 
 ### Логи подов
 
-`minikube kubectl get pods`
+Посмотрим список всех подов - `minikube kubectl get pods`. Как и должно было быть, deployment запустил 2 пода.
 
 ![Pods](https://github.com/AnatoliyBr/2022_2023-introduction_to_distributed_technologies-k4111c-briushinin_a_a/blob/master/lab2/images/get_pods.png 'Pods')
 
-`minikube kubectl -- logs pod/frontend-9c975bc96-b5q2z`
+Смотрим логи первого пода - `minikube kubectl -- logs pod/frontend-9c975bc96-b5q2z`.
 
 ![Log pod 1](https://github.com/AnatoliyBr/2022_2023-introduction_to_distributed_technologies-k4111c-briushinin_a_a/blob/master/lab2/images/log_pod1.png 'Log pod 1')
 
-`minikube kubectl -- logs pod/frontend-9c975bc96-kh262`
+Смотрим логи второго пода - `minikube kubectl -- logs pod/frontend-9c975bc96-kh262`.
 
 ![Log pod 2](https://github.com/AnatoliyBr/2022_2023-introduction_to_distributed_technologies-k4111c-briushinin_a_a/blob/master/lab2/images/log_pod2.png 'Log pod 2')
+
+Чтобы удалить развертывание используем команду - `kubectl delete deployments/frontend`.
+
+Проверяем - `kubectl get deployments` и останавливаем minikube командой `minikube stop`.
+
+### Итоги
+1. Ресурс deployment позволяет создавать несколько подов на основе одного контейнера.
+2. Сервис типа LoadBalancer - эта абстракция, которая позволяет нам воспринимать группу подов (с одинаковой меткой) как единую сущность и работать с ними, используя сервис как единую точку доступа к ним.
+
+    Именно поэтому логи первого и второго пода идентичны.
 
 ### Диаграмма
 Схема организации контейнера и сервиса, нарисованная в [draw.io](https://app.diagrams.net/).
