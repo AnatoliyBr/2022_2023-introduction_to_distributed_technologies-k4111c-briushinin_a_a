@@ -110,7 +110,7 @@ Docker-контейнер по сути и есть микросервис.
 
 ### Архитектура Kubernetes
 
-![K8S architecture](https://github.com/AnatoliyBr/2022_2023-introduction_to_distributed_technologies-k4111c-briushinin_a_a/blob/master/images/k8s_architecture.png 'Архитектура K8S')
+![K8S architecture](https://github.com/AnatoliyBr/2022_2023-introduction_to_distributed_technologies-k4111c-briushinin_a_a/blob/master/images/k8s_architecture.jpg 'Архитектура K8S')
 
 Элементы:
 * Master node - управляет кластером

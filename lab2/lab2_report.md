@@ -1,13 +1,12 @@
-
-        University: [ITMO University](https://itmo.ru/ru/)
-        Faculty: [FICT](https://fict.itmo.ru)
-        Course: [Introduction to distributed technologies](https://github.com/itmo-ict-faculty/introduction-to-distributed-technologies)
-        Year: 2022/2023
-        Group: K4111c
-        Author: Briushinin Anatolii Alekseevich
-        Lab: Lab2
-        Date of create: 21.10.2022
-        Date of finished: 17.11.2022
+University: [ITMO University](https://itmo.ru/ru/)  
+Faculty: [FICT](https://fict.itmo.ru)  
+Course: [Introduction to distributed technologies](https://github.com/itmo-ict-faculty/introduction-to-distributed-technologies)  
+Year: 2022/2023  
+Group: K4111c  
+Author: Briushinin Anatolii Alekseevich  
+Lab: Lab2  
+Date of create: 21.10.2022  
+Date of finished: 17.11.2022
 
 # Лабораторная работа №2 "Развертывание веб сервиса в Minikube, доступ к веб интерфейсу сервиса. Мониторинг сервиса."
 
@@ -150,3 +149,4 @@ characters or '-', and must start and end with an alphanumeric character (e.g. '
 
 ---
 ## Полезные ссылки
+1. [Руководство по Kubernetes, часть 2: создание кластера и работа с ним](https://habr.com/ru/company/ruvds/blog/438984/)

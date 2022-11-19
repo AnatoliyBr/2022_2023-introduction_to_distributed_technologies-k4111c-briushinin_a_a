@@ -40,17 +40,15 @@ def main():
     author = 'Briushinin Anatolii Alekseevich'
     data = '21.10.2022'
 
-    header_text = '''
-        University: [ITMO University](https://itmo.ru/ru/)
-        Faculty: [FICT](https://fict.itmo.ru)
-        Course: [Introduction to distributed technologies](https://github.com/itmo-ict-faculty/introduction-to-distributed-technologies)
-        Year: 2022/2023
-        Group: {group}
-        Author: {author}
-        Lab: lab_num
-        Date of create: {data}
-        Date of finished: -
-        '''.format(group = group, author = author, data = data)
+    header_text = '''University: [ITMO University](https://itmo.ru/ru/)  
+Faculty: [FICT](https://fict.itmo.ru)  
+Course: [Introduction to distributed technologies](https://github.com/itmo-ict-faculty/introduction-to-distributed-technologies)  
+Year: 2022/2023  
+Group: {group}  
+Author: {author}  
+Lab: lab_num  
+Date of create: {data}  
+Date of finished: -'''.format(group = group, author = author, data = data)
 
     create_dir(dir_name, dir_num)
     create_file(file_name, file_type, dir_name, dir_num, header_text)
