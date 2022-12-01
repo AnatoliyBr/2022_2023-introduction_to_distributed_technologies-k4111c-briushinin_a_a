@@ -39,6 +39,7 @@ SSL расшифровывается как Secure Sockets Layer, **TLS – Tran
 
 ### Ingress
 [Ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/) - ресурс, с помощью которого мы можем задать единую точку входа в наш кластер. Ingress позволяет нам назначить для каждого сервиса свой URL, доступный вне кластера.
+
 ---
 ## Ход работы и мои замечания
 
@@ -219,14 +220,16 @@ spec:
 
 ![ingress create](https://github.com/AnatoliyBr/2022_2023-introduction_to_distributed_technologies-k4111c-briushinin_a_a/blob/master/lab3/images/ingress_create.png 'ingress create')
 
-Подключаемся к ingress командой - `minikube tunnel`.
+Подключаемся к Ingress командой - `minikube tunnel`.
 
-`https://frontend-lab3.anatolii`
+Открываем страницу - `https://frontend-lab3.anatolii`.
 
-Видим наши параметры, переданные через ConfigMap:
+Видим наши **параметры**, переданные через ConfigMap:
+
 ![window](https://github.com/AnatoliyBr/2022_2023-introduction_to_distributed_technologies-k4111c-briushinin_a_a/blob/master/lab3/images/window.png 'window')
 
 Данные сертификата:
+
 ![cert check](https://github.com/AnatoliyBr/2022_2023-introduction_to_distributed_technologies-k4111c-briushinin_a_a/blob/master/lab3/images/cert_check.png 'cert check')
 
 ### Диаграмма
