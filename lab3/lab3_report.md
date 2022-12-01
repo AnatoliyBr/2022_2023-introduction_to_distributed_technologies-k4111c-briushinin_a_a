@@ -38,7 +38,7 @@ SSL расшифровывается как Secure Sockets Layer, **TLS – Tran
 > сертификат с публичным ключом для шифрования, приватный ключ для расшифровки
 
 ### Ingress
-[Ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/) - ресурс, с помощью которого мы можем задать единую точку входа в наш кластер. Ingress позволяет нам назначить для каждого сервиса свой URL, доступный вне кластера.
+[Ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/) - ресурс, с помощью которого мы можем задать единую точку входа в наш кластер. Ingress позволяет нам назначить для каждого сервиса свой [URL](https://ru.wikipedia.org/wiki/URL), доступный вне кластера.
 
 ---
 ## Ход работы и мои замечания
@@ -99,8 +99,8 @@ spec:
         - name: REACT_APP_COMPANY_NAME
           valueFrom:
             configMapKeyRef:
-                name: frontend-configmap
-                key: react_app_company_name
+              name: frontend-configmap
+              key: react_app_company_name
 ```
 
 Шаблон пода задается в объекте `Template`. С помощью свойства `env` объявляем внутри подов переменные окружения `REACT_APP_USERNAME` и `REACT_APP_COMPANY_NAME`, а их значения берем из ConfigMap frontend-configmap, который мы создали ранее.
@@ -163,7 +163,7 @@ spec:
 
 ![query for cert](https://github.com/AnatoliyBr/2022_2023-introduction_to_distributed_technologies-k4111c-briushinin_a_a/blob/master/lab3/images/query_for_cert.png 'query for cert')
 
-При создании запроса на подпись нужно указать необходимую информацию. Обязательное поле здесь - это Common Name, например server FQDN or YOUR name.
+При создании запроса на подпись нужно указать необходимую информацию. Обязательное поле здесь - это Common Name, здесь мы указываем наше доменное имя ([FQDN](https://ru.wikipedia.org/wiki/FQDN))), то самое, по которому с помощью Ingress, мы будем заходить на сервер - `frontend-lab3.anatolii`.
 
 Можно подписать сертификат тем же ключом, с помощью которого он был создан.
 
@@ -212,10 +212,15 @@ spec:
               number: 3000
 ```
 
-Как было написано
+В полях **hosts** и **host** указываем наш **FQDN** - `frontend-lab3.anatolii`, согласно замечанию из документации:
+
+> Note: Keep in mind that TLS will not work on the default rule because the certificates would have to be issued for all the possible sub-domains. Therefore, **hosts** in the tls section need to **explicitly match** the **host** in the rules section.
+
+При активации Ingress было написано:
+
 > After the addon is enabled, please run "minikube tunnel" and your ingress resources would be available at "127.0.0.1"
 
-Соответственно, добавляем `127.0.0.1 frontend-lab3.anatolii` в hosts файл, который лежит по пути: `C:\Windows\System32\drivers\etc`. Подробнее можно почитать [тут](https://windows10x.ru/hosts-windows-10/).
+Соответственно, добавляем **IP адрес вашего ingress** и **FQDN**, то есть `127.0.0.1 frontend-lab3.anatolii` в hosts файл, который лежит по пути: `C:\Windows\System32\drivers\etc`. Подробнее можно почитать [тут](https://windows10x.ru/hosts-windows-10/).
 
 Создаем точку входа в кластер minikube командой - `kubectl create -f frontend-ingress.yaml`.
 

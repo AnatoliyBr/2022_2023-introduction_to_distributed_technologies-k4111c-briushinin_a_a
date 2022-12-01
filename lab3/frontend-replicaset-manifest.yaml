@@ -28,5 +28,5 @@ spec:
         - name: REACT_APP_COMPANY_NAME
           valueFrom:
             configMapKeyRef:
-                name: frontend-configmap
-                key: react_app_company_name
+              name: frontend-configmap
+              key: react_app_company_name
