@@ -6,7 +6,7 @@ Group: K4111c
 Author: Briushinin Anatolii Alekseevich  
 Lab: Lab3  
 Date of create: 21.10.2022  
-Date of finished: -
+Date of finished: 01.11.2022
 
 # Лабораторная работа №3 "Сертификаты и "секреты" в Minikube, безопасное хранение данных."
 
@@ -136,7 +136,7 @@ spec:
 
 Согласно [документации на Ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/), этот ресурс работает с сервисами типа `NodePort` или `LoadBalancer`, поэтому указываем в поле `type` один из этих типов.
 
-Посмотреть список используемых портов можно командой - `netstat -aon`.
+~~Посмотреть список используемых портов можно командой - `netstat -aon`.~~
 
 > Note: A Service can map any incoming port to a targetPort. By default and for convenience, the `targetPort` is set to **the same value** as the `port` field.
 
@@ -212,7 +212,10 @@ spec:
               number: 3000
 ```
 
-Добавляем `192.168.49.2 frontend-lab3.anatolii` в hosts файл, который лежит по пути: `C:\Windows\System32\drivers\etc`. Подробнее можно почитать [тут](https://windows10x.ru/hosts-windows-10/).
+Как было написано
+> After the addon is enabled, please run "minikube tunnel" and your ingress resources would be available at "127.0.0.1"
+
+Соответственно, добавляем `127.0.0.1 frontend-lab3.anatolii` в hosts файл, который лежит по пути: `C:\Windows\System32\drivers\etc`. Подробнее можно почитать [тут](https://windows10x.ru/hosts-windows-10/).
 
 Создаем точку входа в кластер minikube командой - `kubectl create -f frontend-ingress.yaml`.
 
