@@ -163,7 +163,7 @@ spec:
 
 ![query for cert](https://github.com/AnatoliyBr/2022_2023-introduction_to_distributed_technologies-k4111c-briushinin_a_a/blob/master/lab3/images/query_for_cert.png 'query for cert')
 
-При создании запроса на подпись нужно указать необходимую информацию. Обязательное поле здесь - это Common Name, здесь мы указываем наше доменное имя ([FQDN](https://ru.wikipedia.org/wiki/FQDN))), то самое, по которому с помощью Ingress, мы будем заходить на сервер - `frontend-lab3.anatolii`.
+При создании запроса на подпись нужно указать необходимую информацию. Обязательное поле здесь - это Common Name, здесь мы указываем наше доменное имя ([FQDN](https://ru.wikipedia.org/wiki/FQDN)), то самое, по которому с помощью Ingress, мы будем заходить на сервер - `frontend-lab3.anatolii`.
 
 Можно подписать сертификат тем же ключом, с помощью которого он был создан.
 
@@ -220,7 +220,7 @@ spec:
 
 > After the addon is enabled, please run "minikube tunnel" and your ingress resources would be available at "127.0.0.1"
 
-Соответственно, добавляем **IP адрес вашего ingress** и **FQDN**, то есть `127.0.0.1 frontend-lab3.anatolii` в hosts файл, который лежит по пути: `C:\Windows\System32\drivers\etc`. Подробнее можно почитать [тут](https://windows10x.ru/hosts-windows-10/).
+Соответственно, добавляем **IP адрес вашего ingress** и **FQDN**, то есть `127.0.0.1 frontend-lab3.anatolii` в [hosts файл](https://www.internet-technologies.ru/articles/newbie/kak-blokirovat-sayty-s-pomoschyu-hosts-v-windows.html), который лежит по пути: `C:\Windows\System32\drivers\etc`.
 
 Создаем точку входа в кластер minikube командой - `kubectl create -f frontend-ingress.yaml`.
 
