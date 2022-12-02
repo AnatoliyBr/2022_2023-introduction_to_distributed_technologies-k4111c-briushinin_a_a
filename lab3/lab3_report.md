@@ -243,7 +243,7 @@ spec:
 ### Диаграмма
 Схема организации кластера minikube и ingress, нарисованная в [draw.io](https://app.diagrams.net/).
 
-![Диаграмма](https://github.com/AnatoliyBr/2022_2023-introduction_to_distributed_technologies-k4111c-briushinin_a_a/blob/master/lab2/images/lab3_diagram.png 'Диаграмма')
+![Диаграмма](https://github.com/AnatoliyBr/2022_2023-introduction_to_distributed_technologies-k4111c-briushinin_a_a/blob/master/lab3/images/lab3_diagram.png 'Диаграмма')
 
 ---
 ## Ошибки (в хронологическом порядке)
