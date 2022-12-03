@@ -78,17 +78,17 @@ metadata:
 * Deployment
     * на самом деле это контроллер контроллера ReplicaSet, который отслеживает количество реплик, контроллер Деплоймент расширяет этот функционал
 * DaemonSet
-    *  поддерживает по одной реплике Pod на каждой из Node кластера
+    * поддерживает по одной реплике Pod на каждой из Node кластера
 * Job
     * поднимает Pod, отрабатывает и помирает до следующего запуска
 * CronJob
     * Job, который запускается по расписанию
 
 ### Хранение данных в K8S
-* ConfigMaps
+* ConfigMap
     * хранение конфигурационных данных
     * объем данных не может превышать 1 Мб 
-* Secrets
+* Secret
     * хранение конфиденциальных данных
     * данные кодируется в base64
 * EmptyDir
@@ -96,8 +96,80 @@ metadata:
     * создается пустым (отсюда и название) на сервере, где лежит Pod в оперативной памяти или на диске
     * существует, пока будет жив его Pod
 * Persistent Volume Claim
-    * Данный тип ресурса позволяет хранить персистентные данные ваших приложений.
-    * Для того, чтобы использовать PVC, Вам необходимо, чтобы в кластере был реализован интерфейс CSI (Container Storage Interface) администратором кластера
+    * хранение постоянных данных приложений
+    * для использования PVC, необходимо, чтобы в кластере был реализован интерфейс CSI (Container Storage Interface) администратором кластера
     * PVC своего рода запрос необходимого постоянного тома (диска)
 
 ### Helm
+[Helm](https://helm.sh/docs/intro/quickstart/) - инструмент для шаблонизации манифестов.
+
+Теперь можно подтягивать значения параметров из .yaml файла автоматически.
+
+Для создания шаблона (chart) необходимо скачать **бинарную утилиту** Helm.
+
+Командой `helm create test-chart` можно создать целое дерево для шаблонов с разными ресурсами K8S.
+
+Например, манифест секрета, в котором значение пароля будет браться из `value.yaml` файла.
+
+```yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: {{ .Values.secret.name }}
+stringData:
+  password: {{ .Values.secret.password }}
+```
+Сам value.yaml
+
+```yaml
+image: ksxack/lesson1:v0.2
+replicas: 2
+secret:
+  name: load-secret
+  password: 1234
+```
+
+Переменные добавляются с помощью конструкции `{{ }}`, если конструкция `{{ .Values... }}`, то значение переменной подставится из файла `values.yaml`, но есть и Helm переменные в стиле `{{ .Release.Name }}`
+
+Установка Helm релиза:  
+`helm install my-helm-release  test-chart -n tst-namespace -f test-chart/values.yaml`
+
+* helm install - запуск установки
+* my-helm-release - имя релиза ( {{ .Release.Name }} )
+* test-chart - папка с самим Chart
+* -f test-chart/values.yaml - файл, из которого подтягиваются переменные
+
+Удаление релиза - `helm uninstall my-helm-release`.
+
+Собрание архива с Chart - `helm package test-chart`
+
+> Helm помогает легко переиспользовать приложения.
+
+### Requests, Limits, QoS
+**Requests** - это то количество ресурсов (mi CPU, миллиядра CPU), которое Pod занимает на Node (worker).
+
+> Если Node расчитана на 1000 mi, то 3 микросервиса по 400 mi не поместяться.
+
+**Limits** - приложения в Pod могут в моменте давать больше нагрузки, чем Вы ожидаете, например Java любит во время старта приложения выжирать весь CPU, который только может, поэтому можно поставить верхнюю границу ресурсов (limit) больше, чем request.
+
+Фрагмент манифеста с описанием Pod.
+```yaml
+resources:
+  requests:
+    memory: "100Mi"
+    cpu: "200m"
+  limits:
+    memory: "100Mi"
+    cpu: "200m"
+```
+
+В K8S cуществуют **три класса QoS** (Quality of Service):
+
+* Best Effort
+    * requests и limits вообще не указаны
+* Burstable
+    * requests != limits
+* Guaranted
+    * requests = limits
+
+> Приоритет классов: Guaranted > Burstable > Best Effort
