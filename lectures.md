@@ -113,13 +113,21 @@ Docker-контейнер по сути и есть микросервис.
 ![K8S architecture](https://github.com/AnatoliyBr/2022_2023-introduction_to_distributed_technologies-k4111c-briushinin_a_a/blob/master/images/k8s_architecture.jpg 'Архитектура K8S')
 
 Элементы:
-* Master node - управляет кластером
-   * API Server настраивает Container Runtime и kube-proxy
-   * etcd (key-value store) - база данных, типа ключ-значение, как MongoDB,  там хранятся все переменные, по сути туда записывается состояние системы
-* Worker Node - железка, в ней 3 монстра, не считая элементов (k8s objects)
+* Master Node (Control Plane) - управляет кластером
+   * API Server настраивает Container Runtime и kube-proxy, разработчик общается с API Server с помощью утилиты kubectl
+   * Scheduler - следит за Pods, не распределенными на Worker Node, он выбирает им подходящую ноду по множеству критериев
+   * Сontroller-manager - запускает Controllers (ресурс K8S), которые подписываются в API Server на свой ресурс
+   * etcd (key-value store) - база данных, типа ключ-значение, как MongoDB, там хранятся все переменные, по сути туда записывается состояние системы, K8S кластер можно полностью восстановить, имея резервную копию etcd
+* Worker Node (Data Plane) - железка, в ней 3 монстра, не считая элементов (k8s objects)
    * kubelet - агент, связывает Container Runtime и API Server
-   * Container Runtime - по сути Docker, в первой лабе - **Pod**
-   * kube-proxy - то с чем работает user - тот самый **сервис**, который создавали для Pod в первой лабе
+      > The Container Runtime Interface (CRI) is the main protocol for the communication between the kubelet and Container Runtime.
+      * CRI - это плагин, позволяющий kubelet'у использовать разные исполняемые среды контейнеров
+   * Container Runtime - это программа, предназначенная для выполнения контейнеров, по сути Docker, в первой лабе - **Pod**
+   * kube-proxy
+      * то с чем работает user - тот самый **сервис**, который создавали для Pod в первой лабе
+      * нужен для настройки сетевого трафика в Pods, то есть частично реализует концепцию Сервиса
+      * конфигурирует правила сети на узлах
+      * при помощи него разрешаются сетевые подключения к Pods изнутри и снаружи кластера
 
 # 3. Диспетчеры и служебные сервисы Kubernetes. Мой первый "Pod"
 
