@@ -32,5 +32,5 @@
 
 ![what_is_containerd](https://github.com/AnatoliyBr/2022_2023-introduction_to_distributed_technologies-k4111c-briushinin_a_a/blob/master/containerd_medium_paper/images/what_is_containerd.png 'What is containerd?')
 
-Статья расположена в директории `containerd_medium_paper`, также опубликована на [Medium](https://medium.com/@anatoliibriushinin/what-is-containerd-bf36c39875c5).
+Статья расположена в директории `containerd_medium_paper`, а также опубликована на [Medium](https://medium.com/@anatoliibriushinin/what-is-containerd-bf36c39875c5).
 
