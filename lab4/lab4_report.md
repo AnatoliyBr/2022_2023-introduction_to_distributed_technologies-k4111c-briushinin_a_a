@@ -6,7 +6,7 @@ Group: K4111c
 Author: Briushinin Anatolii Alekseevich  
 Lab: Lab4  
 Date of create: 21.10.2022  
-Date of finished: -
+Date of finished: 22.12.2022
 
 # Лабораторная работа №4 "Сети связи в Minikube, CNI и CoreDNS"
 
@@ -84,26 +84,34 @@ IPAM представляет собой платформу для обнару�
 ### Calico и Multi-Node Clusters
 При запуске minikube устанавливаем [плагин](https://projectcalico.docs.tigera.io/getting-started/kubernetes/minikube) `CNI=calico`, режим работы `Multi-Node Clusters` и разворачиваем [2 Node](https://minikube.sigs.k8s.io/docs/tutorials/multi_node/) командой:
 
-```minikube start --network-plugin=cni --cni=calico --nodes 2 -p multinode-demo```
+```
+minikube start --network-plugin=cni --cni=calico --nodes 2 -p multinode-demo
+```
 
 Проверяем, что запустились 2 Node: `kubectl get nodes`.
 
 ![get_nodes](https://github.com/AnatoliyBr/2022_2023-introduction_to_distributed_technologies-k4111c-briushinin_a_a/blob/master/lab4/images/get_nodes.png 'get_nodes')
 
-Чтобы проверить работу CNI Calico, посмотрим Pod'ы с меткой **calico-node**: `kubectl get pods -l k8s-app=calico-node -A`.
+Чтобы проверить работу CNI Calico, посмотрим Pod'ы с меткой **calico-node**:
+```
+kubectl get pods -l k8s-app=calico-node -A
+```
 
 ![get_pods](https://github.com/AnatoliyBr/2022_2023-introduction_to_distributed_technologies-k4111c-briushinin_a_a/blob/master/lab4/images/get_pods.png 'get_pods')
 
 ### calicoctl и IPPool
 Для назначения IP адресов в Calico необходимо написать манифест для **IPPool** ресурса.
 
-С помощью IPPool можно создать IP-pool (блок IP-адресов), который выделяет IP-адреса только для узлов с определенной **меткой (label)**.
+С помощью IPPool можно создать **IP-pool (блок IP-адресов)**, который выделяет IP-адреса только для узлов с определенной **меткой (label)**.
 
-Чтобы назначить метки узлам, используем следующие команды: 
-`kubectl label nodes multinode-demo zone=east`
-`kubectl label nodes multinode-demo-m02 zone=west`
+Чтобы назначить метки узлам, используем следующие команды:   
+```
+kubectl label nodes multinode-demo zone=east  
+kubectl label nodes multinode-demo-m02 zone=west
+```
 
 [Шаблон манифеста IPPool](https://projectcalico.docs.tigera.io/networking/assign-ip-addresses-topology) берем из официальной документации Calico:
+
 ```yaml
 apiVersion: projectcalico.org/v3
 kind: IPPool
@@ -130,19 +138,29 @@ spec:
 
 ![calicoctl_created](https://github.com/AnatoliyBr/2022_2023-introduction_to_distributed_technologies-k4111c-briushinin_a_a/blob/master/lab4/images/calicoctl_created.png 'calicoctl_created')
 
-> Команды calicoctl начинаются с: `kubectl exec -i -n kube-system calicoctl -- /calicoctl --allow-version-mismatch`.
+Команды calicoctl начинаются с:
+```
+kubectl exec -i -n kube-system calicoctl -- /calicoctl --allow-version-mismatch
+```
 
 Перед тем, как добавить собственные IPPool'ы, проверим созданные по-умолчанию:
-```kubectl exec -i -n kube-system calicoctl -- /calicoctl --allow-version-mismatch get ippools -o wide```
+```
+kubectl exec -i -n kube-system calicoctl -- /calicoctl --allow-version-mismatch get ippools -o wide
+```
 
-Удаляем IPPool по-умолчанию: `kubectl delete ippools default-ipv4-ippool`.
+Удаляем IPPool по-умолчанию:
+```
+kubectl delete ippools default-ipv4-ippool
+```
 
 ![delete_default_ippool](https://github.com/AnatoliyBr/2022_2023-introduction_to_distributed_technologies-k4111c-briushinin_a_a/blob/master/lab4/images/delete_default_ippool.png 'delete_default_ippool')
 
 Создаем IPPool'ы:
-```kubectl exec -i -n kube-system calicoctl -- /calicoctl --allow-version-mismatch create -f - < lab4-ippool.yaml```
+```
+kubectl exec -i -n kube-system calicoctl -- /calicoctl --allow-version-mismatch create -f - < lab4-ippool.yaml
+```
 
-IDE VS Code ругается на оператор `<` (аналог Get-Content), поэтому выполняю команды в cmd.
+**IDE VS Code** ругается на оператор `<` (аналог Get-Content), поэтому выполняю команды в **cmd**.
 
 ```
 E:
@@ -152,7 +170,9 @@ cd E:\HDD\Magistracy\EducationCourses\ITMO\2022_2023-introduction_to_distributed
 ![create_ippools](https://github.com/AnatoliyBr/2022_2023-introduction_to_distributed_technologies-k4111c-briushinin_a_a/blob/master/lab4/images/create_ippools.png 'create_ippools')
 
 Проверяем, что появилось два pool'а:
-```kubectl exec -i -n kube-system calicoctl -- /calicoctl --allow-version-mismatch get ippool -o wide```
+```
+kubectl exec -i -n kube-system calicoctl -- /calicoctl --allow-version-mismatch get ippool -o wide
+```
 
 ![ippools](https://github.com/AnatoliyBr/2022_2023-introduction_to_distributed_technologies-k4111c-briushinin_a_a/blob/master/lab4/images/ippools.png 'ippools')
 
@@ -177,7 +197,10 @@ spec:
   type: LoadBalancer
 ```
 
-Переходим в папку с .yaml файлом и выполняем команду `kubectl apply -f lab4-deployment.yaml -f lab4-service.yaml`.
+Переходим в папку с .yaml файлом и выполняем команду:
+```
+kubectl apply -f lab4-deployment.yaml -f lab4-service.yaml
+```
 
 Проверяем, что появилось развертывание и сервис: `kubectl get deployments`, `kubectl get services`.
 
@@ -188,7 +211,7 @@ spec:
 ![check_pods_ip](https://github.com/AnatoliyBr/2022_2023-introduction_to_distributed_technologies-k4111c-briushinin_a_a/blob/master/lab4/images/check_pods_ip.png 'check_pods_ip')
 
 ### Проброс порта
-Пробрасываем порт для подключения к сервису через браузер: `kubectl port-forward service/lab4-service 8200:3000`
+Пробрасываем порт для подключения к сервису через браузер: `kubectl port-forward service/lab4-service 8200:3000`.
 
 Переходим по ссылке: `http://localhost:8200/`.
 
@@ -198,7 +221,9 @@ spec:
 
 Пингуем с контейнера `lab4-deployment-84c64d85b4-q2g8q` контейнеру с IP-адресом: `ping 192.168.0.71` с помощью команды:
 
-```kubectl exec -ti lab4-deployment-84c64d85b4-q2g8q -- sh```
+```
+kubectl exec -ti lab4-deployment-84c64d85b4-q2g8q -- sh
+```
 
 ![ping_1](https://github.com/AnatoliyBr/2022_2023-introduction_to_distributed_technologies-k4111c-briushinin_a_a/blob/master/lab4/images/ping_1.png 'ping_1')
 
@@ -206,10 +231,16 @@ spec:
 
 Пингуем с контейнера `lab4-deployment-84c64d85b4-rn4hf` контейнеру с IP-адресом: `ping 192.168.1.194` с помощью команды:
 
-```kubectl exec -ti lab4-deployment-84c64d85b4-rn4hf -- sh```
+```
+kubectl exec -ti lab4-deployment-84c64d85b4-rn4hf -- sh
+```
 
 ![ping_2](https://github.com/AnatoliyBr/2022_2023-introduction_to_distributed_technologies-k4111c-briushinin_a_a/blob/master/lab4/images/ping_2.png 'ping_2')
 
+### Диаграмма
+Схема организации Node, нарисованная в [draw.io](https://app.diagrams.net/).
+
+![Диаграмма](https://github.com/AnatoliyBr/2022_2023-introduction_to_distributed_technologies-k4111c-briushinin_a_a/blob/master/lab4/images/lab4_diagram.png 'Диаграмма')
 
 ---
 ## Ошибки (в хронологическом порядке)
