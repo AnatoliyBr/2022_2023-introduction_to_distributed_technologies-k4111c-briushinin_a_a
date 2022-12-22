@@ -196,6 +196,21 @@ spec:
 
 ### Попингуем?
 
+Пингуем с контейнера `lab4-deployment-84c64d85b4-q2g8q` контейнеру с IP-адресом: `ping 192.168.0.71` с помощью команды:
+
+```kubectl exec -ti lab4-deployment-84c64d85b4-q2g8q -- sh```
+
+![ping_1](https://github.com/AnatoliyBr/2022_2023-introduction_to_distributed_technologies-k4111c-briushinin_a_a/blob/master/lab4/images/ping_1.png 'ping_1')
+
+Чтобы выйти из контейнера, используем команду `exit`.
+
+Пингуем с контейнера `lab4-deployment-84c64d85b4-rn4hf` контейнеру с IP-адресом: `ping 192.168.1.194` с помощью команды:
+
+```kubectl exec -ti lab4-deployment-84c64d85b4-rn4hf -- sh```
+
+![ping_2](https://github.com/AnatoliyBr/2022_2023-introduction_to_distributed_technologies-k4111c-briushinin_a_a/blob/master/lab4/images/ping_2.png 'ping_2')
+
+
 ---
 ## Ошибки (в хронологическом порядке)
 
