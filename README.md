@@ -30,6 +30,7 @@
 1. Шпаргалка по [Markdown](https://github.com/sandino/Markdown-Cheatsheet)
 2. Работа с Markdown в [VSCode](https://code.visualstudio.com/docs/languages/markdown)
 3. Расширение для работы с cистемой контроля версий [Git](https://code.visualstudio.com/docs/sourcecontrol/overview) в VSCode
+4. [Горячие клавиши](https://skillbox.ru/media/base/goryachie_klavishi_v_vscode/) в VSCode
 
 ## Техническая статья на Medium
 ### [Да что такое этот ваш containerd? Как работает контейнеризация? Связь с Docker и Kubernetes](https://github.com/AnatoliyBr/2022_2023-introduction_to_distributed_technologies-k4111c-briushinin_a_a/blob/master/containerd_medium_paper/conainerd_medium_paper.md).
