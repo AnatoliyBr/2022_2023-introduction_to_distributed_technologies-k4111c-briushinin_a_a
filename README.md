@@ -19,6 +19,7 @@
 * `lectures.md` -  с лекций
 * `docker_k8s_notes.md` - с онлайн-курса
 
+`exam.md` - ответы на все вопросы экзамена
 `init_rep.py` - скрипт для инициализации репозитория
 
 ## Подготовительная работа
@@ -33,7 +34,7 @@
 4. [Горячие клавиши](https://skillbox.ru/media/base/goryachie_klavishi_v_vscode/) в VSCode
 
 ## Техническая статья на Medium
-### [Да что такое этот ваш containerd? Как работает контейнеризация? Связь с Docker и Kubernetes](https://github.com/AnatoliyBr/2022_2023-introduction_to_distributed_technologies-k4111c-briushinin_a_a/blob/master/containerd_medium_paper/conainerd_medium_paper.md).
+### [Да что такое этот ваш containerd? Как работает контейнеризация? Связь с Docker и Kubernetes](https://github.com/AnatoliyBr/2022_2023-introduction_to_distributed_technologies-k4111c-briushinin_a_a/blob/master/containerd_medium_paper/conainerd_medium_paper.md)
 
 ![what_is_containerd](https://github.com/AnatoliyBr/2022_2023-introduction_to_distributed_technologies-k4111c-briushinin_a_a/blob/master/containerd_medium_paper/images/what_is_containerd.png 'What is containerd?')
 
